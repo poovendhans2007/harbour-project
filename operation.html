@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crane Operation View</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f2027;
+      color: white;
+      text-align: center;
+    }
+
+    h2 { margin-top: 20px; }
+
+    .stack {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    .box {
+      width: 150px;
+      height: 45px;
+      margin: 4px;
+      background: #27ae60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+    }
+
+    .target {
+      background: pink !important;
+      color: black;
+      font-weight: bold;
+    }
+
+    .remove {
+      background: orange !important;
+    }
+
+    .arrow {
+      font-size: 35px;
+      color: yellow;
+      margin-bottom: 10px;
+    }
+
+    .info {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    .steps {
+      margin-top: 30px;
+      text-align: left;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(0,0,0,0.5);
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🏗️ Crane Operation Guide</h2>
+
+<div class="arrow">⬇️ Hook Position (Center of Target)</div>
+
+<div class="stack" id="stack"></div>
+
+<div class="info" id="info"></div>
+
+<div class="steps" id="steps"></div>
+
+<script>
+
+// Get selected container
+let id = localStorage.getItem("containerId") || "MSCU 829104 5";
+
+// Simulated tier (height position)
+let tier = 4;   // example → 4th level from bottom
+
+// Each container height ~2.6m
+let containerHeight = 2.6;
+
+// Total height from bottom
+let totalHeight = tier * containerHeight;
+
+// Total stack height (random above containers)
+let totalStack = 7;
+
+const stackDiv = document.getElementById("stack");
+
+// Render stack
+for(let i = 1; i <= totalStack; i++) {
+  let div = document.createElement("div");
+  div.className = "box";
+
+  if(i < tier) {
+    div.innerText = "Below Container";
+  }
+  else if(i === tier) {
+    div.innerText = id;
+    div.classList.add("target");
+  }
+  else {
+    div.innerText = "Container Above";
+    div.classList.add("remove");
+  }
+
+  stackDiv.appendChild(div);
+}
+
+// Info
+document.getElementById("info").innerHTML = `
+📦 Target Container: <b>${id}</b><br>
+📏 Height from Bottom: <b>${totalHeight.toFixed(1)} meters</b><br>
+🎯 Crane Hook Point: <b>Center of container at Tier ${tier}</b>
+`;
+
+// Steps (unloading order)
+let stepsHTML = "<h3>📋 Unloading Sequence</h3>";
+
+let step = 1;
+
+// Remove containers above first
+for(let i = totalStack; i > tier; i--) {
+  stepsHTML += `Step ${step++}: Remove container at Tier ${i}<br>`;
+}
+
+// Then pick target
+stepsHTML += `Step ${step}: Lift target container (Tier ${tier})`;
+
+document.getElementById("steps").innerHTML = stepsHTML;
+
+</script>
+
+</body>
+</html>

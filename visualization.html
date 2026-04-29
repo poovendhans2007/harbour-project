@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ship Visualization</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f2027;
+      color: white;
+      text-align: center;
+    }
+
+    h2 { margin-top: 20px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(8, 60px);
+      gap: 5px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .box {
+      width: 60px;
+      height: 60px;
+      background: #3498db;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .highlight {
+      background: pink !important;
+      color: black;
+      font-weight: bold;
+    }
+
+    .side {
+      margin-top: 40px;
+      display: none;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+
+    .layer {
+      width: 120px;
+      height: 40px;
+      margin: 3px;
+      background: #2ecc71;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+    }
+
+    .target {
+      background: pink !important;
+      color: black;
+    }
+
+    .arrow {
+      font-size: 30px;
+      color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🚢 Ship Container Visualization</h2>
+
+<div id="info"></div>
+
+<div class="grid" id="grid"></div>
+
+<div class="side" id="sideView">
+  <h3>Side View (Height)</h3>
+  <div class="arrow">⬇️ Crane Hook</div>
+  <div class="stack" id="stack"></div>
+</div>
+
+<script>
+
+// Get ID from dashboard
+let selectedId = localStorage.getItem("containerId") || "";
+
+// Show ID
+document.getElementById("info").innerHTML =
+  "Tracking Container: <b>" + selectedId + "</b>";
+
+// Create containers
+let containers = [];
+for(let i=0; i<40; i++){
+  containers.push("C" + (100 + i));
+}
+
+// Insert your real container
+containers[12] = "MSCU 829104 5";
+
+const grid = document.getElementById("grid");
+
+// Render grid
+containers.forEach(id => {
+  let div = document.createElement("div");
+  div.className = "box";
+  div.innerText = id;
+
+  // Highlight automatically
+  if(id === selectedId){
+    div.classList.add("highlight");
+  }
+
+  div.onclick = () => showSideView(id);
+
+  grid.appendChild(div);
+});
+
+// SIDE VIEW
+function showSideView(id){
+  let side = document.getElementById("sideView");
+  let stack = document.getElementById("stack");
+
+  side.style.display = "block";
+  stack.innerHTML = "";
+
+  // Save selected container
+  localStorage.setItem("containerId", id);
+
+  let height = Math.floor(Math.random()*5)+3;
+
+  for(let i=0; i<height; i++){
+    let div = document.createElement("div");
+    div.className = "layer";
+
+    if(i === height - 1){
+      // 🎯 TARGET CONTAINER (make it clickable button)
+      div.innerText = id;
+      div.classList.add("target");
+
+      div.style.cursor = "pointer";
+
+      // 👉 CLICK = GO TO NEXT PAGE
+      div.onclick = function(){
+        window.location.href = "operation.html";
+      };
+
+    } else {
+      div.innerText = "Container Layer " + (i+1);
+    }
+
+    stack.appendChild(div);
+  }
+}
+
+</script>
+
+</body>
+</html>

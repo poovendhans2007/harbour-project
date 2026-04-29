@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Harbour Login</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      background: url('harb.jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #00c6ff;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #0072ff;
+    }
+
+    .ship {
+      font-size: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="ship">🚢</div>
+  <h2>Harbour Control Login</h2>
+
+  <input type="text" id="harbourUser" placeholder="Username">
+  <input type="password" id="harbourPass" placeholder="Password">
+
+  <button onclick="harbourLogin()">Login</button>
+</div>
+
+<script>
+function harbourLogin() {
+    let user = document.getElementById("harbourUser").value;
+    let pass = document.getElementById("harbourPass").value;
+
+    if(user === "harbour_admin" && pass === "port@2026"){
+        window.location.href = "manager.html";
+    } else {
+        alert("Access Denied ⚓");
+    }
+}
+</script>
+
+</body>
+</html>
